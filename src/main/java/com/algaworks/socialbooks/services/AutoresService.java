@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.algaworks.socialbooks.domain.Autor;
 import com.algaworks.socialbooks.repository.AutoresRepository;
 import com.algaworks.socialbooks.services.exceptions.AutorExistenteException;
+import com.algaworks.socialbooks.services.exceptions.AutorNaoEncontradoException;
 
 @Service
 public class AutoresService {
@@ -29,5 +30,14 @@ public class AutoresService {
 			}
 		}
 		return autoresRepository.save(autor);
+	}
+	
+	public Autor buscar(Long id) {
+		Autor autor = autoresRepository.findOne(id);
+		
+		if(autor == null) {
+			throw new AutorNaoEncontradoException("O Autor não pode ser encontrado!");
+		}
+		return autor;
 	}
 }
