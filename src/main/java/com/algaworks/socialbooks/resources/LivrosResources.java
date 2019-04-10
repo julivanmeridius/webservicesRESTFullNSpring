@@ -44,7 +44,7 @@ public class LivrosResources {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> buscar(@PathVariable("id") Long id) {
+	public ResponseEntity<Livro> buscar(@PathVariable("id") Long id) {
 		Livro livro = livrosService.buscar(id);
 		
 		CacheControl cacheControl = CacheControl.maxAge(20, TimeUnit.SECONDS);
@@ -74,5 +74,12 @@ public class LivrosResources {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
 		
 		return ResponseEntity.created(uri).build();
+	}	
+	
+	@RequestMapping(value = "/{id}/comentarios", method = RequestMethod.GET)
+	public ResponseEntity<List<Comentario>> listarComentarios(@PathVariable("id") Long livroId) {
+		List<Comentario> comentarios = livrosService.listarComentarios(livroId);
+			
+		return ResponseEntity.status(HttpStatus.OK).body(comentarios);
 	}
 }
